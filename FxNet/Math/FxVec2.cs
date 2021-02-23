@@ -42,6 +42,9 @@ namespace FxNet.Math {
     public static bool operator ==(in FxVec2 l, in FxVec2 r) => l.X == r.X && l.Y == r.Y;
     public static bool operator !=(in FxVec2 l, in FxVec2 r) => l.X != r.X && l.Y != r.Y;
 
+    public override bool Equals(object obj) => obj is FxVec2 other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
+
     public static FxVec2 Min(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Min(a.X, b.X), FxMath.Min(a.Y, b.Y));
     public static FxVec2 Max(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Max(a.X, b.X), FxMath.Max(a.Y, b.Y));
 

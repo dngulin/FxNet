@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
   public struct FxMat4x4 {
+    private const int ItemCount = 4 * 4;
+
     // column 0
     public FxNum M00;
     public FxNum M10;
@@ -80,21 +82,36 @@ namespace FxNet.Math {
       );
     }
 
-    public static FxVec3 operator *(in FxMat4x4 l, in FxVec3 r) {
-      return new FxVec3(
-        l.M00 * r.X + l.M01 * r.Y + l.M02 * r.Z + l.M03,
-        l.M10 * r.X + l.M11 * r.Y + l.M12 * r.Z + l.M13,
-        l.M20 * r.X + l.M21 * r.Y + l.M22 * r.Z + l.M23
-      );
+    public static unsafe bool operator ==(in FxMat4x4 l, in FxMat4x4 r) {
+      fixed (FxNum* pl = &l.M00, pr = &r.M00) {
+        for (var i = 0; i < ItemCount; i++) {
+          if (pl[i] != pr[i]) return false;
+        }
+      }
+
+      return true;
     }
+
+    public static unsafe bool operator !=(in FxMat4x4 l, in FxMat4x4 r) {
+      fixed (FxNum* pl = &l.M00, pr = &r.M00) {
+        for (var i = 0; i < ItemCount; i++) {
+          if (pl[i] == pr[i]) return false;
+        }
+      }
+
+      return true;
+    }
+
+    public override bool Equals(object obj) => obj is FxMat4x4 other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
   }
 
   public static class FxMat4X4Extensions {
     public static FxVec3 MultiplyPoint3x4(this in FxMat4x4 m, in FxVec3 v) {
-      var x = m.M00 * v.X + m.M01 * v.Y + m.M02 * v.Z + m.M03;
-      var y = m.M10 * v.X + m.M11 * v.Y + m.M12 * v.Z + m.M13;
-      var z = m.M20 * v.X + m.M21 * v.Y + m.M22 * v.Z + m.M23;
-      return new FxVec3(x, y, z);
+      return new FxVec3(
+        m.M00 * v.X + m.M01 * v.Y + m.M02 * v.Z + m.M03,
+        m.M10 * v.X + m.M11 * v.Y + m.M12 * v.Z + m.M13,
+        m.M20 * v.X + m.M21 * v.Y + m.M22 * v.Z + m.M23);
     }
 
     public static bool TryInverse(in this FxMat4x4 mat, out FxMat4x4 inv) {
@@ -144,6 +161,7 @@ namespace FxNet.Math {
          (mat.M00 * a1223 - mat.M01 * a0223 + mat.M02 * a0123) / det,
         -(mat.M00 * a1213 - mat.M01 * a0213 + mat.M02 * a0113) / det,
          (mat.M00 * a1212 - mat.M01 * a0212 + mat.M02 * a0112) / det);
+
       return true;
     }
   }

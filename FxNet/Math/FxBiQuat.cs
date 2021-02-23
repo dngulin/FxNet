@@ -16,6 +16,12 @@ namespace FxNet.Math {
     public static FxBiQuat operator *(in FxBiQuat l, in FxBiQuat r) {
       return new FxBiQuat(l.Real * r.Real, l.Real * r.Dual + l.Dual * r.Real);
     }
+
+    public static bool operator ==(in FxBiQuat l, in FxBiQuat r) => l.Real == r.Real && l.Dual == r.Dual;
+    public static bool operator !=(in FxBiQuat l, in FxBiQuat r) => l.Real != r.Real && l.Dual != r.Dual;
+
+    public override bool Equals(object obj) => obj is FxBiQuat other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
   }
 
   public static class FxBiQuatExtensions {

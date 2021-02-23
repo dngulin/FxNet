@@ -43,6 +43,12 @@ namespace FxNet.Math {
     public static FxVec3 operator >>(in FxVec3 v, int n) => new FxVec3(v.X >> n, v.Y >> n, v.Z >> n);
     public static FxVec3 operator <<(in FxVec3 v, int n) => new FxVec3(v.X << n, v.Y << n, v.Z << n);
 
+    public static bool operator ==(in FxVec3 l, in FxVec3 r) => l.X == r.X && l.Y == r.Y && l.Z == r.Z;
+    public static bool operator !=(in FxVec3 l, in FxVec3 r) => l.X != r.X && l.Y != r.Y && l.Z != r.Z;
+
+    public override bool Equals(object obj) => obj is FxVec3 other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
+
     public static FxNum Dot(in FxVec3 a, in FxVec3 b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 
     public static FxVec3 Cross(in FxVec3 a, in FxVec3 b) {

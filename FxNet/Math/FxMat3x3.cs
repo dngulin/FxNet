@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
   public struct FxMat3x3 {
+    private const int ItemCount = 3 * 3;
+
     // column 0
     public FxNum M00;
     public FxNum M10;
@@ -35,8 +37,7 @@ namespace FxNet.Math {
       M22 = m22;
     }
 
-    public static FxMat3x3 operator*(in FxMat3x3 l, in FxMat3x3 r)
-    {
+    public static FxMat3x3 operator *(in FxMat3x3 l, in FxMat3x3 r) {
       return new FxMat3x3(
         l.M00 * r.M00 + l.M01 * r.M10 + l.M02 * r.M20,
         l.M00 * r.M01 + l.M01 * r.M11 + l.M02 * r.M21,
@@ -50,8 +51,7 @@ namespace FxNet.Math {
       );
     }
 
-    public static FxVec3 operator*(in FxMat3x3 l, in FxVec3 r)
-    {
+    public static FxVec3 operator *(in FxMat3x3 l, in FxVec3 r) {
       return new FxVec3(
         l.M00 * r.X + l.M01 * r.Y + l.M02 * r.Z,
         l.M10 * r.X + l.M11 * r.Y + l.M12 * r.Z,
@@ -59,20 +59,35 @@ namespace FxNet.Math {
       );
     }
 
-    public static FxVec2 operator*(in FxMat3x3 l, in FxVec2 r)
-    {
-      return new FxVec2(
-        l.M00 * r.X + l.M01 * r.Y + l.M02,
-        l.M10 * r.X + l.M11 * r.Y + l.M12
-      );
+    public static unsafe bool operator ==(in FxMat3x3 l, in FxMat3x3 r) {
+      fixed (FxNum* pl = &l.M00, pr = &r.M00) {
+        for (var i = 0; i < ItemCount; i++) {
+          if (pl[i] != pr[i]) return false;
+        }
+      }
+
+      return true;
     }
+
+    public static unsafe bool operator !=(in FxMat3x3 l, in FxMat3x3 r) {
+      fixed (FxNum* pl = &l.M00, pr = &r.M00) {
+        for (var i = 0; i < ItemCount; i++) {
+          if (pl[i] == pr[i]) return false;
+        }
+      }
+
+      return true;
+    }
+
+    public override bool Equals(object obj) => obj is FxMat3x3 other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
   }
 
   public static class FxMat3X3Extensions {
     public static FxVec2 MultiplyPoint2x3(this in FxMat3x3 m, in FxVec2 v) {
-      var x = m.M00 * v.X + m.M01 * v.Y + m.M02;
-      var y = m.M10 * v.X + m.M11 * v.Y + m.M12;
-      return new FxVec2(x, y);
+      return new FxVec2(
+        m.M00 * v.X + m.M01 * v.Y + m.M02,
+        m.M10 * v.X + m.M11 * v.Y + m.M12);
     }
   }
 }

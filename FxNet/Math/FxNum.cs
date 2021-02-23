@@ -64,11 +64,8 @@ namespace FxNet.Math {
     public static FxNum operator >>(in FxNum v, int n) => new FxNum(v.Raw >> n);
     public static FxNum operator <<(in FxNum v, int n) => new FxNum(v.Raw << n);
 
-    public bool Equals(FxNum other) => Raw == other.Raw;
-
-    public override bool Equals(object obj) => obj is FxNum other && Equals(other);
-
-    public override int GetHashCode() => Raw.GetHashCode();
+    public override bool Equals(object obj) => obj is FxNum other && this == other;
+    public override int GetHashCode() => throw new NotSupportedException();
 
     public override string ToString() => ((double) this).ToString(CultureInfo.InvariantCulture);
 

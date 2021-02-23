@@ -47,6 +47,12 @@ namespace FxNet.Math {
 
     public static FxQuat operator >>(in FxQuat q, int n) => new FxQuat(q.X >> n, q.Y >> n, q.Z >> n, q.W >> n);
     public static FxQuat operator <<(in FxQuat q, int n) => new FxQuat(q.X << n, q.Y << n, q.Z << n, q.W << n);
+
+    public static bool operator ==(in FxQuat l, in FxQuat r) => l.X == r.X && l.Y == r.Y && l.Z == r.Z && l.W == r.W;
+    public static bool operator !=(in FxQuat l, in FxQuat r) => l.X != r.X && l.Y != r.Y && l.Z != r.Z && l.W != r.W;
+
+    public override bool Equals(object obj) => obj is FxQuat other && this == other;
+    public override int GetHashCode() => throw new System.NotSupportedException();
   }
 
   public static class FxQuatExtensions {
