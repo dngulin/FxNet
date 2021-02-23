@@ -1,0 +1,11 @@
+.idea
+*.DotSettings.user
+
+FxNet/bin
+FxNet/obj
+
+FxNet.LutGenerator/bin
+FxNet.LutGenerator/obj
+
+FxNet.Tests/bin
+FxNet.Tests/obj

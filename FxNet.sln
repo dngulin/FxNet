@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxNet", "FxNet\FxNet.csproj", "{1AE9E4AE-A2EB-470C-AA30-BA79F040FD3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxNet.LutGenerator", "FxNet.LutGenerator\FxNet.LutGenerator.csproj", "{2D68BE41-D166-4B30-A888-6647BD0B6926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxNet.Tests", "FxNet.Tests\FxNet.Tests.csproj", "{06D1F59B-98B6-4D04-AAD5-FCEA87569154}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AE9E4AE-A2EB-470C-AA30-BA79F040FD3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE9E4AE-A2EB-470C-AA30-BA79F040FD3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE9E4AE-A2EB-470C-AA30-BA79F040FD3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE9E4AE-A2EB-470C-AA30-BA79F040FD3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D68BE41-D166-4B30-A888-6647BD0B6926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D68BE41-D166-4B30-A888-6647BD0B6926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D68BE41-D166-4B30-A888-6647BD0B6926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D68BE41-D166-4B30-A888-6647BD0B6926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D1F59B-98B6-4D04-AAD5-FCEA87569154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D1F59B-98B6-4D04-AAD5-FCEA87569154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D1F59B-98B6-4D04-AAD5-FCEA87569154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D1F59B-98B6-4D04-AAD5-FCEA87569154}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
