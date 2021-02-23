@@ -24,14 +24,14 @@ namespace FxNet.Collision2D {
     }
 
     public unsafe FxVec2 GetMaxInDirection(in FxPoly3 shape, in FxVec2 direction) {
-      fixed (void* points = &shape) {
-        return GetMaxInDirection((FxVec2*) points, 3, direction);
+      fixed (FxVec2* points = &shape.A) {
+        return GetMaxInDirection(points, 3, direction);
       }
     }
 
     public unsafe FxVec2 GetMaxInDirection(in FxPoly4 shape, in FxVec2 direction) {
-      fixed (void* points = &shape) {
-        return GetMaxInDirection((FxVec2*) points, 4, direction);
+      fixed (FxVec2* points = &shape.A) {
+        return GetMaxInDirection(points, 4, direction);
       }
     }
 
