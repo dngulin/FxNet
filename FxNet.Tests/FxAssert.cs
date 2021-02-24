@@ -5,7 +5,7 @@ namespace FxNet.Tests {
   public static class FxAssert {
     public static void Equal(in FxNum expected, in FxNum actual, in FxNum threshold) {
       if (FxMath.Abs(expected - actual) > threshold)
-        throw new EqualException((double) expected, (double) actual);
+        throw new EqualException(expected.ToStr(), actual.ToStr());
     }
   }
 }

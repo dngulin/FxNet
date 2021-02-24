@@ -88,6 +88,7 @@ namespace FxNet.Math {
 
     public static bool TryParse(string value, int beginPos, int endPos, out FxNum result) {
       result = new FxNum(0);
+
       if (string.IsNullOrEmpty(value))
         return false;
 
@@ -114,7 +115,7 @@ namespace FxNet.Math {
         if (!TryGetDigit(value[i], out var digit))
           return false;
 
-        result += digit / power;
+        result += FromInt(digit) / power;
         power *= 10;
       }
 

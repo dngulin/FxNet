@@ -23,5 +23,17 @@ namespace FxNet.Tests {
       var num = FxNum.FromInt(numerator) / denominator;
       Assert.Equal(expected, num.ToStr());
     }
+
+    [Theory]
+    [InlineData(1, 10)]
+    [InlineData(1, 1000)]
+    [InlineData(22, 7)]
+    [InlineData(3, 7)]
+    [InlineData(128, 233)]
+    public void TestToStringAndParse(int numerator, int denominator) {
+      var expected = FxNum.FromInt(numerator) / denominator;
+      var actual = FxNum.Parse(expected.ToStr());
+      FxAssert.Equal(expected, actual, FxNum.FromMillis(1));
+    }
   }
 }
