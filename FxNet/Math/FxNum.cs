@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using System.Text;
 
 namespace FxNet.Math {
   public struct FxNum {
@@ -67,7 +67,7 @@ namespace FxNet.Math {
     public override bool Equals(object obj) => obj is FxNum other && this == other;
     public override int GetHashCode() => throw new NotSupportedException();
 
-    public override string ToString() => ((double) this).ToString(CultureInfo.InvariantCulture);
+    public override string ToString() => this.ToStr();
 
     public static FxNum MulBigValues(in FxNum l, in FxNum r) {
       var r1 = (long) r;
@@ -127,6 +127,59 @@ namespace FxNet.Math {
     private static bool TryGetDigit(char c, out int digit) {
       digit = c - '0';
       return digit >= 0 && digit <= 9;
+    }
+  }
+
+  public static class FxNumExtensions {
+    public static string ToStr(this in FxNum num) {
+      var sb = new StringBuilder(32);
+      sb.AppendFxNum(num);
+      return sb.ToString();
+    }
+
+    public static unsafe void AppendFxNum(this StringBuilder sb, in FxNum num) {
+      const int buffSize = 16;
+      var buffer = stackalloc char[buffSize];
+
+      var abs = FxMath.Abs(num);
+
+      {
+        var value = (long) abs;
+        var rangeStart = buffSize;
+
+        while (value > 0 && rangeStart > 0) {
+          var digit = (int) (value % 10);
+          buffer[--rangeStart] = (char) ('0' + digit);
+          value /= 10;
+        }
+
+        if (num.Raw < 0) sb.Append('-');
+
+        if (rangeStart < buffSize) {
+          sb.Append(buffer + rangeStart, buffSize - rangeStart);
+        }
+        else {
+          sb.Append('0');
+        }
+      }
+
+      {
+        var value = abs - (long) abs;
+        var rangeEnd = 0;
+
+        while (value.Raw > 0 && rangeEnd < 5) {
+          value *= 10;
+          var digit = (int) value;
+          buffer[rangeEnd++] = (char) ('0' + digit);
+          value -= digit;
+        }
+
+        if (rangeEnd == 0)
+          return;
+
+        sb.Append('.');
+        sb.Append(buffer, rangeEnd);
+      }
     }
   }
 }
