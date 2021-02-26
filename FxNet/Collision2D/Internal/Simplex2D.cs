@@ -34,8 +34,8 @@ namespace FxNet.Collision2D.Internal {
       if (_count == 1)
         return -_points[0];
 
-      var a = _points[1];
-      var b = _points[0];
+      ref var a = ref _points[1];
+      ref var b = ref _points[0];
 
       var ab = b - a;
       var ao = -a;
@@ -48,9 +48,9 @@ namespace FxNet.Collision2D.Internal {
     }
 
     public bool CheckForOrigin(out FxVec2 nextDirection, out int pointToRemoveIndex) {
-      var a = _points[2];
-      var b = _points[1];
-      var c = _points[0];
+      ref var a = ref _points[2];
+      ref var b = ref _points[1];
+      ref var c = ref _points[0];
 
       var ao = -a;
       var ab = b - a;
