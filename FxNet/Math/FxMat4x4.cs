@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
@@ -104,9 +105,11 @@ namespace FxNet.Math {
 
     public override bool Equals(object obj) => obj is FxMat4x4 other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
+
+    public override string ToString() => this.ToStr();
   }
 
-  public static class FxMat4X4Extensions {
+  public static class FxMat4Extensions {
     public static FxVec3 MultiplyPoint3x4(this in FxMat4x4 m, in FxVec3 v) {
       return new FxVec3(
         m.M00 * v.X + m.M01 * v.Y + m.M02 * v.Z + m.M03,
@@ -163,6 +166,24 @@ namespace FxNet.Math {
          (mat.M00 * a1212 - mat.M01 * a0212 + mat.M02 * a0112) / det);
 
       return true;
+    }
+
+    public static string ToStr(this in FxMat4x4 mat) {
+      var sb = new StringBuilder(512);
+      sb.AppendFxMat4(mat);
+      return sb.ToString();
+    }
+
+    public static void AppendFxMat4(this StringBuilder sb, in FxMat4x4 mat) {
+      sb.Append('{');
+      sb.AppendFxQuat(new FxQuat(mat.M00, mat.M01, mat.M02, mat.M03));
+      sb.Append(", ");
+      sb.AppendFxQuat(new FxQuat(mat.M10, mat.M11, mat.M12, mat.M13));
+      sb.Append(", ");
+      sb.AppendFxQuat(new FxQuat(mat.M20, mat.M21, mat.M22, mat.M23));
+      sb.Append(", ");
+      sb.AppendFxQuat(new FxQuat(mat.M30, mat.M31, mat.M32, mat.M33));
+      sb.Append('}');
     }
   }
 }

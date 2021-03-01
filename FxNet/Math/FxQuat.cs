@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
@@ -53,6 +54,8 @@ namespace FxNet.Math {
 
     public override bool Equals(object obj) => obj is FxQuat other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
+
+    public override string ToString() => this.ToStr();
   }
 
   public static class FxQuatExtensions {
@@ -67,6 +70,24 @@ namespace FxNet.Math {
         return FxQuat.Identity;
 
       return q / m;
+    }
+
+    public static string ToStr(this in FxQuat quat) {
+      var sb = new StringBuilder(64);
+      sb.AppendFxQuat(quat);
+      return sb.ToString();
+    }
+
+    public static void AppendFxQuat(this StringBuilder sb, in FxQuat quat) {
+      sb.Append('{');
+      sb.AppendFxNum(quat.X);
+      sb.Append(", ");
+      sb.AppendFxNum(quat.Y);
+      sb.Append(", ");
+      sb.AppendFxNum(quat.Z);
+      sb.Append(", ");
+      sb.AppendFxNum(quat.W);
+      sb.Append('}');
     }
   }
 }

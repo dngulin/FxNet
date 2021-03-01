@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
@@ -81,13 +82,31 @@ namespace FxNet.Math {
 
     public override bool Equals(object obj) => obj is FxMat3x3 other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
+
+    public override string ToString() => this.ToStr();
   }
 
-  public static class FxMat3X3Extensions {
+  public static class FxMat3Extensions {
     public static FxVec2 MultiplyPoint2x3(this in FxMat3x3 m, in FxVec2 v) {
       return new FxVec2(
         m.M00 * v.X + m.M01 * v.Y + m.M02,
         m.M10 * v.X + m.M11 * v.Y + m.M12);
+    }
+
+    public static string ToStr(this in FxMat3x3 mat) {
+      var sb = new StringBuilder(256);
+      sb.AppendFxMat3(mat);
+      return sb.ToString();
+    }
+
+    public static void AppendFxMat3(this StringBuilder sb, in FxMat3x3 mat) {
+      sb.Append('{');
+      sb.AppendFxVec3(new FxVec3(mat.M00, mat.M01, mat.M02));
+      sb.Append(", ");
+      sb.AppendFxVec3(new FxVec3(mat.M10, mat.M11, mat.M12));
+      sb.Append(", ");
+      sb.AppendFxVec3(new FxVec3(mat.M20, mat.M21, mat.M22));
+      sb.Append('}');
     }
   }
 }

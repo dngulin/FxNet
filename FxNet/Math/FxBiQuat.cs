@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
@@ -29,6 +30,20 @@ namespace FxNet.Math {
       var real = bq.Real.Conjugation();
       var dual = -real * bq.Dual * real;
       return new FxBiQuat(real, dual);
+    }
+
+    public static string ToStr(this in FxBiQuat bq) {
+      var sb = new StringBuilder(128);
+      sb.AppendFxBiQuat(bq);
+      return sb.ToString();
+    }
+
+    public static void AppendFxBiQuat(this StringBuilder sb, in FxBiQuat bq) {
+      sb.Append('{');
+      sb.AppendFxQuat(bq.Real);
+      sb.Append(", ");
+      sb.AppendFxQuat(bq.Dual);
+      sb.Append('}');
     }
   }
 }

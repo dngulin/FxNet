@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
@@ -48,6 +49,8 @@ namespace FxNet.Math {
 
     public override bool Equals(object obj) => obj is FxVec3 other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
+
+    public override string ToString() => this.ToStr();
 
     public static FxNum Dot(in FxVec3 a, in FxVec3 b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 
@@ -158,5 +161,21 @@ namespace FxNet.Math {
     }
 
     public static FxVec3 Clamped(this in FxVec3 v, in FxNum mag) => FxVec3.ClampMagnitude(v, mag);
+
+    public static string ToStr(this in FxVec3 vec) {
+      var sb = new StringBuilder(64);
+      sb.AppendFxVec3(vec);
+      return sb.ToString();
+    }
+
+    public static void AppendFxVec3(this StringBuilder sb, in FxVec3 vec) {
+      sb.Append('{');
+      sb.AppendFxNum(vec.X);
+      sb.Append(", ");
+      sb.AppendFxNum(vec.Y);
+      sb.Append(", ");
+      sb.AppendFxNum(vec.Z);
+      sb.Append('}');
+    }
   }
 }
