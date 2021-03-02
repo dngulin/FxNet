@@ -46,9 +46,18 @@ namespace FxNet.Math {
 
     public static FxQuat operator -(in FxQuat q) => new FxQuat(-q.X, -q.Y, -q.Z, -q.W);
 
-    public static FxQuat operator /(in FxQuat q, in FxNum s) => new FxQuat(q.X / s, q.Y / s, q.Z / s, q.W / s);
-    public static FxQuat operator /(in FxQuat q, int s) => new FxQuat(q.X / s, q.Y / s, q.Z / s, q.W / s);
-    public static FxQuat operator /(in FxQuat q, in long s) => new FxQuat(q.X / s, q.Y / s, q.Z / s, q.W / s);
+    public static FxQuat operator *(in FxQuat q, in FxNum n) => new FxQuat(q.X * n, q.Y * n, q.Z * n, q.W * n);
+    public static FxQuat operator *(in FxNum n, in FxQuat q) => new FxQuat(n * q.X, n * q.Y, n * q.Z, n * q.W);
+
+    public static FxQuat operator *(in FxQuat q, int n) => new FxQuat(q.X * n, q.Y * n, q.Z * n, q.W * n);
+    public static FxQuat operator *(int n, in FxQuat q) => new FxQuat(n * q.X, n * q.Y, n * q.Z, n * q.W);
+
+    public static FxQuat operator *(in FxQuat q, in long n) => new FxQuat(q.X * n, q.Y * n, q.Z * n, q.W * n);
+    public static FxQuat operator *(in long n, in FxQuat q) => new FxQuat(n * q.X, n * q.Y, n * q.Z, n * q.W);
+
+    public static FxQuat operator /(in FxQuat q, in FxNum n) => new FxQuat(q.X / n, q.Y / n, q.Z / n, q.W / n);
+    public static FxQuat operator /(in FxQuat q, int n) => new FxQuat(q.X / n, q.Y / n, q.Z / n, q.W / n);
+    public static FxQuat operator /(in FxQuat q, in long n) => new FxQuat(q.X / n, q.Y / n, q.Z / n, q.W / n);
 
     public static FxQuat operator >>(in FxQuat q, int n) => new FxQuat(q.X >> n, q.Y >> n, q.Z >> n, q.W >> n);
     public static FxQuat operator <<(in FxQuat q, int n) => new FxQuat(q.X << n, q.Y << n, q.Z << n, q.W << n);
@@ -65,7 +74,7 @@ namespace FxNet.Math {
   public static class FxQuatExtensions {
     public static FxQuat Conjugation(this in FxQuat q) => new FxQuat(-q.X, -q.Y, -q.Z, q.W);
 
-    public static FxQuat Inverted(this in FxQuat q) => q.Conjugation() / FxQuat.Dot(q, q);
+    public static FxQuat Inverted(this in FxQuat q) => q.Conjugation() * (1 / FxQuat.Dot(q, q));
 
     public static FxQuat Normalized(this in FxQuat q) {
       var m = FxMath.Sqrt(q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W);
@@ -73,7 +82,7 @@ namespace FxNet.Math {
       if (m.Raw == 0)
         return FxQuat.Identity;
 
-      return q / m;
+      return q * (1 / m);
     }
 
     public static string ToStr(this in FxQuat quat) {

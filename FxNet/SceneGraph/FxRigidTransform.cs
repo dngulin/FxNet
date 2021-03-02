@@ -49,37 +49,37 @@ namespace FxNet.SceneGraph {
     public static FxVec3 ExtractTranslation(in FxMat4 m) => new FxVec3(m.M03, m.M13, m.M23);
 
     public static FxQuat ExtractRotation(in FxMat4 m) {
-      FxNum x, y, z, w, s;
+      FxNum x, y, z, w, k;
       var one = (FxNum) 1;
 
       var trace = m.M00 + m.M11 + m.M22;
       if (trace > 0) {
         w = FxMath.Sqrt(one + trace) >> 1;
-        s = w << 2;
-        x = (m.M21 - m.M12) / s;
-        y = (m.M02 - m.M20) / s;
-        z = (m.M10 - m.M01) / s;
+        k = one / (w << 2);
+        x = (m.M21 - m.M12) * k;
+        y = (m.M02 - m.M20) * k;
+        z = (m.M10 - m.M01) * k;
       }
       else if (m.M00 > m.M11 && m.M00 > m.M22) {
         x = FxMath.Sqrt(one + m.M00 - m.M11 - m.M22) >> 1;
-        s = x << 2;
-        y = (m.M10 + m.M01) / s;
-        z = (m.M02 + m.M20) / s;
-        w = (m.M21 - m.M12) / s;
+        k = one / (x << 2);
+        y = (m.M10 + m.M01) * k;
+        z = (m.M02 + m.M20) * k;
+        w = (m.M21 - m.M12) * k;
       }
       else if (m.M11 > m.M22) {
         y = FxMath.Sqrt(one - m.M00 + m.M11 - m.M22) >> 1;
-        s = y << 2;
-        x = (m.M10 + m.M01) / s;
-        z = (m.M21 + m.M12) / s;
-        w = (m.M02 - m.M20) / s;
+        k = one / (y << 2);
+        x = (m.M10 + m.M01) * k;
+        z = (m.M21 + m.M12) * k;
+        w = (m.M02 - m.M20) * k;
       }
       else {
         z = FxMath.Sqrt(one - m.M00 - m.M11 + m.M22) >> 1;
-        s = z << 2;
-        x = (m.M02 + m.M20) / s;
-        y = (m.M21 + m.M12) / s;
-        w = (m.M10 - m.M01) / s;
+        k = one / (z << 2);
+        x = (m.M02 + m.M20) * k;
+        y = (m.M21 + m.M12) * k;
+        w = (m.M10 - m.M01) * k;
       }
 
       return new FxQuat(x, y, z, w);

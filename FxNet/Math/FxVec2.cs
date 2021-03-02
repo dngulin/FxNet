@@ -70,7 +70,7 @@ namespace FxNet.Math {
 
       if (sqrMag > maxMagnitude * maxMagnitude) {
         var mag = FxMath.Sqrt(sqrMag);
-        return vector / mag * maxMagnitude;
+        return vector * (maxMagnitude / mag);
       }
 
       return vector;
@@ -137,7 +137,7 @@ namespace FxNet.Math {
       if (m.Raw == 0)
         return FxVec2.Zero;
 
-      return v / m;
+      return v * (1 / m);
     }
 
     public static FxVec2 Clamped(this in FxVec2 v, in FxNum mag) => FxVec2.ClampMagnitude(v, mag);
