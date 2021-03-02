@@ -11,7 +11,7 @@ namespace FxNet.Math {
 
     public static FxNum Floor(in FxNum value) => FxNum.FromInt((long) value);
     public static FxNum Ceil(in FxNum value) => Floor(value + FxNum.FromRaw(FxNum.OneRaw - 1));
-    public static FxNum Round(in FxNum value) => Floor(value + FxNum.FromRaw(FxNum.OneRaw / 2));
+    public static FxNum Round(in FxNum value) => Floor(value + FxNum.FromRaw(FxNum.HalfRaw));
 
     public static FxNum Abs(in FxNum value) => FxNum.FromRaw(System.Math.Abs(value.Raw));
     public static FxNum Sign(FxNum value) => System.Math.Sign(value.Raw);

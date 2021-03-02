@@ -32,10 +32,14 @@ namespace FxNet.Math {
 
     public static FxQuat operator *(in FxQuat l, in FxQuat r) {
       return new FxQuat(
-        l.W * r.X + l.X * r.W + l.Y * r.Z - l.Z * r.Y,
-        l.W * r.Y + l.Y * r.W + l.Z * r.X - l.X * r.Z,
-        l.W * r.Z + l.Z * r.W + l.X * r.Y - l.Y * r.X,
-        l.W * r.W - l.X * r.X - l.Y * r.Y - l.Z * r.Z);
+        FxNum.MulRounding(l.W, r.X) + FxNum.MulRounding(l.X, r.W) +
+        FxNum.MulRounding(l.Y, r.Z) - FxNum.MulRounding(l.Z, r.Y),
+        FxNum.MulRounding(l.W, r.Y) + FxNum.MulRounding(l.Y, r.W) +
+        FxNum.MulRounding(l.Z, r.X) - FxNum.MulRounding(l.X, r.Z),
+        FxNum.MulRounding(l.W, r.Z) + FxNum.MulRounding(l.Z, r.W) +
+        FxNum.MulRounding(l.X, r.Y) - FxNum.MulRounding(l.Y, r.X),
+        FxNum.MulRounding(l.W, r.W) - FxNum.MulRounding(l.X, r.X) -
+        FxNum.MulRounding(l.Y, r.Y) - FxNum.MulRounding(l.Z, r.Z));
     }
 
     public static FxQuat operator +(in FxQuat l, in FxQuat r) => new FxQuat(l.X + r.X, l.Y + r.Y, l.Z + r.Z, l.W + r.W);

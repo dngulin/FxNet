@@ -5,6 +5,8 @@ namespace FxNet.Math {
   public struct FxNum {
     public const int Precision = 18;
     public const long OneRaw = 1 << Precision;
+    public const long HalfRaw = OneRaw / 2;
+    public const long AlmostHalfRaw = HalfRaw - 1;
 
     public long Raw;
     private FxNum(in long rawValue) => Raw = rawValue;
@@ -68,6 +70,8 @@ namespace FxNet.Math {
     public override int GetHashCode() => throw new NotSupportedException();
 
     public override string ToString() => this.ToStr();
+
+    public static FxNum MulRounding(in FxNum l, in FxNum r) => new FxNum((l.Raw * r.Raw + AlmostHalfRaw) >> Precision);
 
     public static FxNum MulBigValues(in FxNum l, in FxNum r) {
       var r1 = (long) r;
