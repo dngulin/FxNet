@@ -14,7 +14,7 @@ namespace FxNet.Math {
     public static FxNum Round(in FxNum value) => Floor(value + FxNum.FromRaw(FxNum.HalfRaw));
 
     public static FxNum Abs(in FxNum value) => FxNum.FromRaw(System.Math.Abs(value.Raw));
-    public static FxNum Sign(FxNum value) => System.Math.Sign(value.Raw);
+    public static int Sign(FxNum value) => System.Math.Sign(value.Raw);
 
     public static FxNum Min(in FxNum a, in FxNum b) => FxNum.FromRaw(System.Math.Min(a.Raw, b.Raw));
     public static FxNum Max(in FxNum a, in FxNum b) => FxNum.FromRaw(System.Math.Max(a.Raw, b.Raw));

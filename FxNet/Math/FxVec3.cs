@@ -138,7 +138,7 @@ namespace FxNet.Math {
 
     public static FxVec3 Reflect(in FxVec3 inDirection, in FxVec3 inNormal)
     {
-      var factor = -Dot(inNormal, inDirection) << 1;
+      var factor = -2 * Dot(inNormal, inDirection);
       return new FxVec3(
         factor * inNormal.X + inDirection.X,
         factor * inNormal.Y + inDirection.Y,

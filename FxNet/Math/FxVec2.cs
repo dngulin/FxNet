@@ -48,10 +48,22 @@ namespace FxNet.Math {
 
     public override string ToString() => this.ToStr();
 
-    public static FxVec2 Min(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Min(a.X, b.X), FxMath.Min(a.Y, b.Y));
-    public static FxVec2 Max(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Max(a.X, b.X), FxMath.Max(a.Y, b.Y));
-
     public static FxNum Dot(FxVec2 a, FxVec2 b) => a.X * b.X + a.Y * b.Y;
+
+    public static FxVec2 Lerp(in FxVec2 a, in FxVec2 b, in FxNum t) {
+      var k = FxMath.Clamp01(t);
+      return new FxVec2(
+        a.X + (b.X - a.X) * k,
+        a.Y + (b.Y - a.Y) * k
+      );
+    }
+
+    public static FxVec2 LerpUnclamped(in FxVec2 a, in FxVec2 b, in FxNum t) {
+      return new FxVec2(
+        a.X + (b.X - a.X) * t,
+        a.Y + (b.Y - a.Y) * t
+      );
+    }
 
     public static FxVec2 ClampMagnitude(in FxVec2 vector, in FxNum maxMagnitude) {
       var sqrMag = vector.SqrMagnitude();
@@ -62,6 +74,55 @@ namespace FxNet.Math {
       }
 
       return vector;
+    }
+
+    public static FxNum Angle(in FxVec2 from, in FxVec2 to) {
+      var d = FxMath.Sqrt(from.SqrMagnitude() * to.SqrMagnitude());
+      if (d < FxNum.FromRaw(1 << 2))
+        return 0;
+
+      var dot = FxMath.Clamp(Dot(from, to) / d, -1, 1);
+      return FxMath.Acos(dot) * FxMath.Rad2Deg;
+    }
+
+    public static FxNum SignedAngle(in FxVec2 from, in FxVec2 to)
+    {
+      var angle = Angle(from, to);
+      var sign = FxMath.Sign(from.X * to.Y - from.Y * to.X);
+      return angle * sign;
+    }
+
+    public static FxVec2 Min(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Min(a.X, b.X), FxMath.Min(a.Y, b.Y));
+    public static FxVec2 Max(in FxVec2 a, in FxVec2 b) => new FxVec2(FxMath.Max(a.X, b.X), FxMath.Max(a.Y, b.Y));
+
+    public static FxVec2 SmoothDamp(in FxVec2 curr, in FxVec2 target, ref FxVec2 velocity, FxNum smoothTime, in FxNum maxSpeed, in FxNum dt) {
+      smoothTime = FxMath.Max(smoothTime, FxNum.FromMillis(1));
+
+      var change = ClampMagnitude(curr - target, maxSpeed * smoothTime);
+
+      var omega = 2 / smoothTime;
+      var x = omega * dt;
+      var exp = 1 / (1 + x + FxNum.FromCents(48) * x * x + FxNum.FromMillis(235) * x * x * x);
+
+      var temp = (velocity + change * omega) * dt;
+      velocity = (velocity - temp * omega) * exp;
+
+      var output = curr - change + (change + temp) * exp;
+
+      if (Dot(target - curr, output - target) > 0) {
+        output = target;
+        velocity = Zero;
+      }
+
+      return output;
+    }
+
+    public static FxVec2 Reflect(in FxVec2 inDirection, in FxVec2 inNormal)
+    {
+      var factor = -2 * Dot(inNormal, inDirection);
+      return new FxVec2(
+        factor * inNormal.X + inDirection.X,
+        factor * inNormal.Y + inDirection.Y);
     }
   }
 
