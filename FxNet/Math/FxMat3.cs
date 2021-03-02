@@ -3,7 +3,7 @@ using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
-  public struct FxMat3x3 {
+  public struct FxMat3 {
     private const int ItemCount = 3 * 3;
 
     // column 0
@@ -21,7 +21,7 @@ namespace FxNet.Math {
     public FxNum M12;
     public FxNum M22;
 
-    public FxMat3x3(
+    public FxMat3(
       in FxNum m00, in FxNum m01, in FxNum m02,
       in FxNum m10, in FxNum m11, in FxNum m12,
       in FxNum m20, in FxNum m21, in FxNum m22) {
@@ -38,8 +38,8 @@ namespace FxNet.Math {
       M22 = m22;
     }
 
-    public static FxMat3x3 operator *(in FxMat3x3 l, in FxMat3x3 r) {
-      return new FxMat3x3(
+    public static FxMat3 operator *(in FxMat3 l, in FxMat3 r) {
+      return new FxMat3(
         l.M00 * r.M00 + l.M01 * r.M10 + l.M02 * r.M20,
         l.M00 * r.M01 + l.M01 * r.M11 + l.M02 * r.M21,
         l.M00 * r.M02 + l.M01 * r.M12 + l.M02 * r.M22,
@@ -52,7 +52,7 @@ namespace FxNet.Math {
       );
     }
 
-    public static FxVec3 operator *(in FxMat3x3 l, in FxVec3 r) {
+    public static FxVec3 operator *(in FxMat3 l, in FxVec3 r) {
       return new FxVec3(
         l.M00 * r.X + l.M01 * r.Y + l.M02 * r.Z,
         l.M10 * r.X + l.M11 * r.Y + l.M12 * r.Z,
@@ -60,7 +60,7 @@ namespace FxNet.Math {
       );
     }
 
-    public static unsafe bool operator ==(in FxMat3x3 l, in FxMat3x3 r) {
+    public static unsafe bool operator ==(in FxMat3 l, in FxMat3 r) {
       fixed (FxNum* pl = &l.M00, pr = &r.M00) {
         for (var i = 0; i < ItemCount; i++) {
           if (pl[i] != pr[i]) return false;
@@ -70,7 +70,7 @@ namespace FxNet.Math {
       return true;
     }
 
-    public static unsafe bool operator !=(in FxMat3x3 l, in FxMat3x3 r) {
+    public static unsafe bool operator !=(in FxMat3 l, in FxMat3 r) {
       fixed (FxNum* pl = &l.M00, pr = &r.M00) {
         for (var i = 0; i < ItemCount; i++) {
           if (pl[i] == pr[i]) return false;
@@ -80,26 +80,26 @@ namespace FxNet.Math {
       return true;
     }
 
-    public override bool Equals(object obj) => obj is FxMat3x3 other && this == other;
+    public override bool Equals(object obj) => obj is FxMat3 other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
 
     public override string ToString() => this.ToStr();
   }
 
   public static class FxMat3Extensions {
-    public static FxVec2 MultiplyPoint2x3(this in FxMat3x3 m, in FxVec2 v) {
+    public static FxVec2 MultiplyPoint(this in FxMat3 m, in FxVec2 v) {
       return new FxVec2(
         m.M00 * v.X + m.M01 * v.Y + m.M02,
         m.M10 * v.X + m.M11 * v.Y + m.M12);
     }
 
-    public static string ToStr(this in FxMat3x3 mat) {
+    public static string ToStr(this in FxMat3 mat) {
       var sb = new StringBuilder(256);
       sb.AppendFxMat3(mat);
       return sb.ToString();
     }
 
-    public static void AppendFxMat3(this StringBuilder sb, in FxMat3x3 mat) {
+    public static void AppendFxMat3(this StringBuilder sb, in FxMat3 mat) {
       sb.Append('{');
       sb.AppendFxVec3(new FxVec3(mat.M00, mat.M01, mat.M02));
       sb.Append(", ");

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace FxNet.Math {
   [StructLayout(LayoutKind.Sequential)]
-  public struct FxMat4x4 {
+  public struct FxMat4 {
     private const int ItemCount = 4 * 4;
 
     // column 0
@@ -30,13 +30,13 @@ namespace FxNet.Math {
     public FxNum M23;
     public FxNum M33;
 
-    public static FxMat4x4 Identity => new FxMat4x4(
+    public static FxMat4 Identity => new FxMat4(
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
       0, 0, 0, 1);
 
-    public FxMat4x4(
+    public FxMat4(
       in FxNum m00, in FxNum m01, in FxNum m02, in FxNum m03,
       in FxNum m10, in FxNum m11, in FxNum m12, in FxNum m13,
       in FxNum m20, in FxNum m21, in FxNum m22, in FxNum m23,
@@ -62,8 +62,8 @@ namespace FxNet.Math {
       M33 = m33;
     }
 
-    public static FxMat4x4 operator *(in FxMat4x4 l, in FxMat4x4 r) {
-      return new FxMat4x4(
+    public static FxMat4 operator *(in FxMat4 l, in FxMat4 r) {
+      return new FxMat4(
         l.M00 * r.M00 + l.M01 * r.M10 + l.M02 * r.M20 + l.M03 * r.M30,
         l.M00 * r.M01 + l.M01 * r.M11 + l.M02 * r.M21 + l.M03 * r.M31,
         l.M00 * r.M02 + l.M01 * r.M12 + l.M02 * r.M22 + l.M03 * r.M32,
@@ -83,7 +83,7 @@ namespace FxNet.Math {
       );
     }
 
-    public static unsafe bool operator ==(in FxMat4x4 l, in FxMat4x4 r) {
+    public static unsafe bool operator ==(in FxMat4 l, in FxMat4 r) {
       fixed (FxNum* pl = &l.M00, pr = &r.M00) {
         for (var i = 0; i < ItemCount; i++) {
           if (pl[i] != pr[i]) return false;
@@ -93,7 +93,7 @@ namespace FxNet.Math {
       return true;
     }
 
-    public static unsafe bool operator !=(in FxMat4x4 l, in FxMat4x4 r) {
+    public static unsafe bool operator !=(in FxMat4 l, in FxMat4 r) {
       fixed (FxNum* pl = &l.M00, pr = &r.M00) {
         for (var i = 0; i < ItemCount; i++) {
           if (pl[i] == pr[i]) return false;
@@ -103,21 +103,21 @@ namespace FxNet.Math {
       return true;
     }
 
-    public override bool Equals(object obj) => obj is FxMat4x4 other && this == other;
+    public override bool Equals(object obj) => obj is FxMat4 other && this == other;
     public override int GetHashCode() => throw new System.NotSupportedException();
 
     public override string ToString() => this.ToStr();
   }
 
   public static class FxMat4Extensions {
-    public static FxVec3 MultiplyPoint3x4(this in FxMat4x4 m, in FxVec3 v) {
+    public static FxVec3 MultiplyPoint(this in FxMat4 m, in FxVec3 v) {
       return new FxVec3(
         m.M00 * v.X + m.M01 * v.Y + m.M02 * v.Z + m.M03,
         m.M10 * v.X + m.M11 * v.Y + m.M12 * v.Z + m.M13,
         m.M20 * v.X + m.M21 * v.Y + m.M22 * v.Z + m.M23);
     }
 
-    public static bool TryInverse(in this FxMat4x4 mat, out FxMat4x4 inv) {
+    public static bool TryInverse(in this FxMat4 mat, out FxMat4 inv) {
       var a2323 = mat.M22 * mat.M33 - mat.M23 * mat.M32;
       var a1323 = mat.M21 * mat.M33 - mat.M23 * mat.M31;
       var a1223 = mat.M21 * mat.M32 - mat.M22 * mat.M31;
@@ -143,11 +143,11 @@ namespace FxNet.Math {
                 mat.M03 * (mat.M10 * a1223 - mat.M11 * a0223 + mat.M12 * a0123);
 
       if (det.Raw == 0) {
-        inv = FxMat4x4.Identity;
+        inv = FxMat4.Identity;
         return false;
       }
 
-      inv = new FxMat4x4(
+      inv = new FxMat4(
          (mat.M11 * a2323 - mat.M12 * a1323 + mat.M13 * a1223) / det,
         -(mat.M01 * a2323 - mat.M02 * a1323 + mat.M03 * a1223) / det,
          (mat.M01 * a2313 - mat.M02 * a1313 + mat.M03 * a1213) / det,
@@ -168,13 +168,13 @@ namespace FxNet.Math {
       return true;
     }
 
-    public static string ToStr(this in FxMat4x4 mat) {
+    public static string ToStr(this in FxMat4 mat) {
       var sb = new StringBuilder(512);
       sb.AppendFxMat4(mat);
       return sb.ToString();
     }
 
-    public static void AppendFxMat4(this StringBuilder sb, in FxMat4x4 mat) {
+    public static void AppendFxMat4(this StringBuilder sb, in FxMat4 mat) {
       sb.Append('{');
       sb.AppendFxQuat(new FxQuat(mat.M00, mat.M01, mat.M02, mat.M03));
       sb.Append(", ");

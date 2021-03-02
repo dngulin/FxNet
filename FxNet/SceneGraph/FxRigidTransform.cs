@@ -2,7 +2,7 @@ using FxNet.Math;
 
 namespace FxNet.SceneGraph {
   public static class FxRigidTransform {
-    public static FxMat4x4 CombineMatrix(in FxVec3 translation, in FxQuat rotation) {
+    public static FxMat4 CombineMatrix(in FxVec3 translation, in FxQuat rotation) {
       var zero = (FxNum) 0;
       var one = (FxNum) 1;
 
@@ -18,7 +18,7 @@ namespace FxNet.SceneGraph {
       var zz = rotation.Z * rotation.Z << 1;
       var zw = rotation.Z * rotation.W << 1;
 
-      var result = new FxMat4x4(
+      var result = new FxMat4(
         one - (yy + zz), xy - zw, xz + yw, translation.X,
         xy + zw, one - (xx + zz), yz - xw, translation.Y,
         xz - yw, yz + xw, one - (xx + yy), translation.Z,
@@ -27,17 +27,17 @@ namespace FxNet.SceneGraph {
       return result;
     }
 
-    public static FxMat4x4 Inverse(in FxMat4x4 m) {
+    public static FxMat4 Inverse(in FxMat4 m) {
       var zero = (FxNum) 0;
       var one = (FxNum) 1;
 
-      var inv = new FxMat4x4(
+      var inv = new FxMat4(
         m.M00, m.M10, m.M20, zero,
         m.M01, m.M11, m.M21, zero,
         m.M02, m.M12, m.M22, zero,
         zero, zero, zero, one);
 
-      var translation = -inv.MultiplyPoint3x4(ExtractTranslation(m));
+      var translation = -inv.MultiplyPoint(ExtractTranslation(m));
 
       inv.M03 = translation.X;
       inv.M13 = translation.Y;
@@ -46,9 +46,9 @@ namespace FxNet.SceneGraph {
       return inv;
     }
 
-    public static FxVec3 ExtractTranslation(in FxMat4x4 m) => new FxVec3(m.M03, m.M13, m.M23);
+    public static FxVec3 ExtractTranslation(in FxMat4 m) => new FxVec3(m.M03, m.M13, m.M23);
 
-    public static FxQuat ExtractRotation(in FxMat4x4 m) {
+    public static FxQuat ExtractRotation(in FxMat4 m) {
       FxNum x, y, z, w, s;
       var one = (FxNum) 1;
 
