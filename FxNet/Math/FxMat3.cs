@@ -21,6 +21,11 @@ namespace FxNet.Math {
     public FxNum M12;
     public FxNum M22;
 
+    public static FxMat3 Identity => new FxMat3(
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1);
+
     public FxMat3(
       in FxNum m00, in FxNum m01, in FxNum m02,
       in FxNum m10, in FxNum m11, in FxNum m12,
@@ -91,6 +96,35 @@ namespace FxNet.Math {
       return new FxVec2(
         m.M00 * v.X + m.M01 * v.Y + m.M02,
         m.M10 * v.X + m.M11 * v.Y + m.M12);
+    }
+
+    public static bool TryInverse(in this FxMat3 mat, out FxMat3 inv) {
+      var a = mat.M11 * mat.M22 - mat.M21 * mat.M12;
+      var b = mat.M12 * mat.M20 - mat.M10 * mat.M22;
+      var c = mat.M10 * mat.M21 - mat.M11 * mat.M20;
+
+      var det = mat.M00 * a + mat.M01 * b + mat.M02 * c;
+
+      if (det.Raw == 0) {
+        inv = FxMat3.Identity;
+        return false;
+      }
+
+      var invDet = 1 / det;
+
+      inv = new FxMat3(
+        a * invDet,
+        (mat.M02 * mat.M21 - mat.M01 * mat.M22) * invDet,
+        (mat.M01 * mat.M12 - mat.M02 * mat.M11) * invDet,
+        b * invDet,
+        (mat.M00 * mat.M22 - mat.M02 * mat.M20) * invDet,
+        (mat.M10 * mat.M02 - mat.M00 * mat.M12) * invDet,
+        c * invDet,
+        (mat.M20 * mat.M01 - mat.M00 * mat.M21) * invDet,
+        (mat.M00 * mat.M11 - mat.M10 * mat.M01) * invDet
+      );
+
+      return true;
     }
 
     public static string ToStr(this in FxMat3 mat) {

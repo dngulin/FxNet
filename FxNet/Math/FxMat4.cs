@@ -147,23 +147,25 @@ namespace FxNet.Math {
         return false;
       }
 
+      var invDet = 1 / det;
+
       inv = new FxMat4(
-         (mat.M11 * a2323 - mat.M12 * a1323 + mat.M13 * a1223) / det,
-        -(mat.M01 * a2323 - mat.M02 * a1323 + mat.M03 * a1223) / det,
-         (mat.M01 * a2313 - mat.M02 * a1313 + mat.M03 * a1213) / det,
-        -(mat.M01 * a2312 - mat.M02 * a1312 + mat.M03 * a1212) / det,
-        -(mat.M10 * a2323 - mat.M12 * a0323 + mat.M13 * a0223) / det,
-         (mat.M00 * a2323 - mat.M02 * a0323 + mat.M03 * a0223) / det,
-        -(mat.M00 * a2313 - mat.M02 * a0313 + mat.M03 * a0213) / det,
-         (mat.M00 * a2312 - mat.M02 * a0312 + mat.M03 * a0212) / det,
-         (mat.M10 * a1323 - mat.M11 * a0323 + mat.M13 * a0123) / det,
-        -(mat.M00 * a1323 - mat.M01 * a0323 + mat.M03 * a0123) / det,
-         (mat.M00 * a1313 - mat.M01 * a0313 + mat.M03 * a0113) / det,
-        -(mat.M00 * a1312 - mat.M01 * a0312 + mat.M03 * a0112) / det,
-        -(mat.M10 * a1223 - mat.M11 * a0223 + mat.M12 * a0123) / det,
-         (mat.M00 * a1223 - mat.M01 * a0223 + mat.M02 * a0123) / det,
-        -(mat.M00 * a1213 - mat.M01 * a0213 + mat.M02 * a0113) / det,
-         (mat.M00 * a1212 - mat.M01 * a0212 + mat.M02 * a0112) / det);
+         (mat.M11 * a2323 - mat.M12 * a1323 + mat.M13 * a1223) * invDet,
+        -(mat.M01 * a2323 - mat.M02 * a1323 + mat.M03 * a1223) * invDet,
+         (mat.M01 * a2313 - mat.M02 * a1313 + mat.M03 * a1213) * invDet,
+        -(mat.M01 * a2312 - mat.M02 * a1312 + mat.M03 * a1212) * invDet,
+        -(mat.M10 * a2323 - mat.M12 * a0323 + mat.M13 * a0223) * invDet,
+         (mat.M00 * a2323 - mat.M02 * a0323 + mat.M03 * a0223) * invDet,
+        -(mat.M00 * a2313 - mat.M02 * a0313 + mat.M03 * a0213) * invDet,
+         (mat.M00 * a2312 - mat.M02 * a0312 + mat.M03 * a0212) * invDet,
+         (mat.M10 * a1323 - mat.M11 * a0323 + mat.M13 * a0123) * invDet,
+        -(mat.M00 * a1323 - mat.M01 * a0323 + mat.M03 * a0123) * invDet,
+         (mat.M00 * a1313 - mat.M01 * a0313 + mat.M03 * a0113) * invDet,
+        -(mat.M00 * a1312 - mat.M01 * a0312 + mat.M03 * a0112) * invDet,
+        -(mat.M10 * a1223 - mat.M11 * a0223 + mat.M12 * a0123) * invDet,
+         (mat.M00 * a1223 - mat.M01 * a0223 + mat.M02 * a0123) * invDet,
+        -(mat.M00 * a1213 - mat.M01 * a0213 + mat.M02 * a0113) * invDet,
+         (mat.M00 * a1212 - mat.M01 * a0212 + mat.M02 * a0112) * invDet);
 
       return true;
     }
