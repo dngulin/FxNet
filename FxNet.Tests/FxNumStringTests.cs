@@ -20,7 +20,7 @@ namespace FxNet.Tests {
     [InlineData(2, 3, "0.66666")]
     [InlineData(-22, 7, "-3.14285")]
     public void TestFractionalToString(int numerator, int denominator, string expected) {
-      var num = FxNum.FromInt(numerator) / denominator;
+      var num = FxNum.FromRatio(numerator, denominator);
       Assert.Equal(expected, num.ToStr());
     }
 
@@ -31,7 +31,7 @@ namespace FxNet.Tests {
     [InlineData(3, 7)]
     [InlineData(128, 233)]
     public void TestToStringAndParse(int numerator, int denominator) {
-      var expected = FxNum.FromInt(numerator) / denominator;
+      var expected = FxNum.FromRatio(numerator, denominator);
       var actual = FxNum.Parse(expected.ToStr());
       FxAssert.Equal(expected, actual, FxNum.FromMillis(1));
     }
