@@ -12,7 +12,7 @@ namespace FxNet.Tests {
     [InlineData(8000, 10000)]
     public void TestSqrt(int from, int to) {
       const int steps = 1000;
-      var precision = FxNum.FromMillis(1);
+      var precision = FxNum.FromRatio(1, 1000);
 
       var min = (FxNum) from;
       var max = (FxNum) to;
@@ -29,7 +29,7 @@ namespace FxNet.Tests {
     public void TestSinCosSquaresSum() {
       const int steps = 10000;
       var step = 360 * FxMath.Deg2Rad / steps;
-      var precision = FxNum.FromMillis(1) / 10;
+      var precision = FxNum.FromRatio(1, 10000);
 
       for (var i = 0; i <= steps; i++) {
         var angle = i * step;
@@ -45,7 +45,7 @@ namespace FxNet.Tests {
     public void TestSinDualAngle() {
       const int steps = 10000;
       var step = 360 * FxMath.Deg2Rad / steps;
-      var precision = FxNum.FromMillis(5) / 10;
+      var precision = FxNum.FromRatio(5, 10000);
 
       for (var i = 0; i <= steps; i++) {
         var angle = i * step;
@@ -61,7 +61,7 @@ namespace FxNet.Tests {
     public void TestCosDualAngle() {
       const int steps = 10000;
       var step = 360 * FxMath.Deg2Rad / steps;
-      var precision = FxNum.FromMillis(5) / 10;
+      var precision = FxNum.FromRatio(5, 10000);
 
       for (var i = 0; i <= steps; i++) {
         var angle = i * step;
@@ -79,7 +79,7 @@ namespace FxNet.Tests {
     [Fact]
     public void TestAsin() {
       const int steps = 10000;
-      var precision = FxNum.FromMillis(5) / 10;
+      var precision = FxNum.FromRatio(5, 10000);
 
       var min = (FxNum) (-1);
       var max = (FxNum) 1;
@@ -94,7 +94,7 @@ namespace FxNet.Tests {
     [Fact]
     public void TestAcos() {
       const int steps = 10000;
-      var precision = FxNum.FromMillis(5) / 10;
+      var precision = FxNum.FromRatio(5, 10000);
 
       var min = (FxNum) (-1);
       var max = (FxNum) 1;

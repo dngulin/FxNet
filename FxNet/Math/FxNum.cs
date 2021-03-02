@@ -14,6 +14,8 @@ namespace FxNet.Math {
     public static FxNum FromRaw(in long rawValue) => new FxNum(rawValue);
     public static FxNum FromInt(in long value) => new FxNum(value << Precision);
 
+    public static FxNum FromRatio(int numerator, int denominator) => FromInt(numerator) / denominator;
+
     public static FxNum FromCents(int cents) => FromInt(cents) / 100;
     public static FxNum FromCents(in long cents) => FromInt(cents) / 100;
 
