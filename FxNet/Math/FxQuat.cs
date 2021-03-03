@@ -30,6 +30,26 @@ namespace FxNet.Math {
       return new FxQuat(xyz.X, xyz.Y, xyz.Z, cos);
     }
 
+    public static FxQuat Slerp(in FxQuat a, in FxQuat b, in FxNum t) {
+      var one = FxNum.FromRaw(FxNum.OneRaw);
+
+      var cosHalfTheta = Dot(a, b);
+      if (FxMath.Abs(cosHalfTheta) >= one)
+        return a;
+
+      var sinHalfTheta = FxMath.Sqrt(one - cosHalfTheta * cosHalfTheta);
+      if (FxMath.Abs(sinHalfTheta) < FxNum.FromMillis(1))
+        return (a + b) >> 1;
+
+      var halfTheta = FxMath.Asin(sinHalfTheta);
+      var invSinHalfTheta = one / sinHalfTheta;
+
+      var k1 = FxMath.Sin((one - t) * halfTheta) * invSinHalfTheta;
+      var k2 = FxMath.Sin(t * halfTheta) * invSinHalfTheta;
+
+      return a * k1 + b * k2;
+    }
+
     public static FxQuat operator *(in FxQuat l, in FxQuat r) {
       return new FxQuat(
         FxNum.MulRounding(l.W, r.X) + FxNum.MulRounding(l.X, r.W) +
