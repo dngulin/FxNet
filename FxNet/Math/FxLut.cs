@@ -5,15 +5,16 @@ namespace FxNet.Math {
     public const long RadToDegRaw = 15019744;
 
     private const int SqrtShift = 10;
-    private const long SqrtStepRaw = 1 << SqrtShift;
     private const long SqrtStepMask = (long) (ulong.MaxValue >> (64 - SqrtShift));
+    private const long SqrtStepRaw = 1 << SqrtShift;
+    private const long SqrtInvStepRaw = (FxNum.OneRaw << FxNum.Precision) / SqrtStepRaw;
 
     public static FxNum Sqrt(in long raw) {
       fixed(int* lut = LutSqrt) {
         var index = raw >> SqrtShift;
         var bot = FxNum.FromRaw(lut[index]);
         var top = FxNum.FromRaw(lut[index + 1]);
-        var factor = FxNum.FromRaw(raw & SqrtStepMask) / FxNum.FromRaw(SqrtStepRaw);
+        var factor = FxNum.FromRaw(raw & SqrtStepMask) * FxNum.FromRaw(SqrtInvStepRaw);
         return bot + factor * (top - bot);
       }
     }
@@ -151,15 +152,16 @@ namespace FxNet.Math {
     };
 
     private const int CosShift = 8;
-    private const long CosStepRaw = 1 << CosShift;
     private const long CosStepMask = (long) (ulong.MaxValue >> (64 - CosShift));
+    private const long CosStepRaw = 1 << CosShift;
+    private const long CosInvStepRaw = (FxNum.OneRaw << FxNum.Precision) / CosStepRaw;
 
     public static FxNum Cos(in long raw) {
       fixed(int* lut = LutCos) {
         var index = raw >> CosShift;
         var bot = FxNum.FromRaw(lut[index]);
         var top = FxNum.FromRaw(lut[index + 1]);
-        var factor = FxNum.FromRaw(raw & CosStepMask) / FxNum.FromRaw(CosStepRaw);
+        var factor = FxNum.FromRaw(raw & CosStepMask) * FxNum.FromRaw(CosInvStepRaw);
         return bot + factor * (top - bot);
       }
     }
@@ -370,15 +372,16 @@ namespace FxNet.Math {
     };
 
     private const int AsinShift = 8;
-    private const long AsinStepRaw = 1 << AsinShift;
     private const long AsinStepMask = (long) (ulong.MaxValue >> (64 - AsinShift));
+    private const long AsinStepRaw = 1 << AsinShift;
+    private const long AsinInvStepRaw = (FxNum.OneRaw << FxNum.Precision) / AsinStepRaw;
 
     public static FxNum Asin(in long raw) {
       fixed(int* lut = LutAsin) {
         var index = raw >> AsinShift;
         var bot = FxNum.FromRaw(lut[index]);
         var top = FxNum.FromRaw(lut[index + 1]);
-        var factor = FxNum.FromRaw(raw & AsinStepMask) / FxNum.FromRaw(AsinStepRaw);
+        var factor = FxNum.FromRaw(raw & AsinStepMask) * FxNum.FromRaw(AsinInvStepRaw);
         return bot + factor * (top - bot);
       }
     }
@@ -516,15 +519,16 @@ namespace FxNet.Math {
     };
 
     private const int AtanShift = 8;
-    private const long AtanStepRaw = 1 << AtanShift;
     private const long AtanStepMask = (long) (ulong.MaxValue >> (64 - AtanShift));
+    private const long AtanStepRaw = 1 << AtanShift;
+    private const long AtanInvStepRaw = (FxNum.OneRaw << FxNum.Precision) / AtanStepRaw;
 
     public static FxNum Atan(in long raw) {
       fixed(int* lut = LutAtan) {
         var index = raw >> AtanShift;
         var bot = FxNum.FromRaw(lut[index]);
         var top = FxNum.FromRaw(lut[index + 1]);
-        var factor = FxNum.FromRaw(raw & AtanStepMask) / FxNum.FromRaw(AtanStepRaw);
+        var factor = FxNum.FromRaw(raw & AtanStepMask) * FxNum.FromRaw(AtanInvStepRaw);
         return bot + factor * (top - bot);
       }
     }

@@ -43,8 +43,11 @@ namespace FxNet.LutGenerator {
       Console.WriteLine($"{name}Lut: {lutSize}");
 
       scope.WriteLine($"private const int {name}Shift = {shift};");
-      scope.WriteLine($"private const long {name}StepRaw = 1 << {name}Shift;");
       scope.WriteLine($"private const long {name}StepMask = (long) (ulong.MaxValue >> (64 - {name}Shift));");
+
+      scope.WriteLine($"private const long {name}StepRaw = 1 << {name}Shift;");
+      scope.WriteLine($"private const long {name}InvStepRaw = (FxNum.OneRaw << FxNum.Precision) / {name}StepRaw;");
+
 
       scope.WriteLine();
       using (var fnScope = scope.Sub($"public static FxNum {name}(in long raw)"))
@@ -52,7 +55,7 @@ namespace FxNet.LutGenerator {
         fixedScope.WriteLine($"var index = raw >> {name}Shift;");
         fixedScope.WriteLine("var bot = FxNum.FromRaw(lut[index]);");
         fixedScope.WriteLine("var top = FxNum.FromRaw(lut[index + 1]);");
-        fixedScope.WriteLine($"var factor = FxNum.FromRaw(raw & {name}StepMask) / FxNum.FromRaw({name}StepRaw);");
+        fixedScope.WriteLine($"var factor = FxNum.FromRaw(raw & {name}StepMask) * FxNum.FromRaw({name}InvStepRaw);");
         fixedScope.WriteLine("return bot + factor * (top - bot);");
       }
 
