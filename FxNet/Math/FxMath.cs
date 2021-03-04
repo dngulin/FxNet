@@ -46,10 +46,7 @@ namespace FxNet.Math {
 
       var root = FxLut.Sqrt(raw) << fours;
 
-      root = (root + value / root) >> 1;
-      root = (root + value / root) >> 1;
-
-      return root;
+      return (root + value / root) >> 1;
     }
 
     public static FxNum Sin(in FxNum value) => Cos(FxNum.FromRaw(HalfPiRaw) - value);
