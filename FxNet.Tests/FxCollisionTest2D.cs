@@ -22,5 +22,25 @@ namespace FxNet.Tests {
       Assert.Equal(expected, FxCollisionChecker2D.Check(a, b, FxVec2.Up));
       Assert.Equal(expected, FxCollisionChecker2D.Check(b, a, FxVec2.Up));
     }
+
+    public static IEnumerable<object[]> GetCircleToPoly4Data() {
+      yield return new object[] {
+        new FxCircle(new FxVec2(FxNum.FromMillis(0_945), FxNum.FromMillis(-0_945)), FxNum.FromRatio(1, 2)),
+        new FxPoly4(new FxVec2(-35, -20), new FxVec2(-5, -10), new FxVec2(35, -10), new FxVec2(35, -20)),
+        false
+      };
+      yield return new object[] {
+        new FxCircle(new FxVec2(-10, -10), FxNum.FromRatio(1, 2)),
+        new FxPoly4(new FxVec2(-35, -20), new FxVec2(-35, -10), new FxVec2(35, -10), new FxVec2(35, -20)),
+        true
+      };
+    }
+
+    [Theory]
+    [MemberData(nameof(GetCircleToPoly4Data))]
+    public void TestCircleToPoly4Collision(in FxCircle c, in FxPoly4 p, bool expected) {
+      var dir = c.Center - (p.A + p.C) >> 1;
+      Assert.Equal(expected, FxCollisionChecker2D.Check(c, p, dir));
+    }
   }
 }
