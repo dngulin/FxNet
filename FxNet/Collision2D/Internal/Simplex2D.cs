@@ -37,8 +37,8 @@ namespace FxNet.Collision2D.Internal {
       ref var a = ref _points[1];
       ref var b = ref _points[0];
 
-      var ab = b - a;
-      var ao = -a;
+      var ab = (b - a).Normalized();
+      var ao = -a.Normalized();
 
       var direction = TripleProduct(ab, ao, ab); // perpendicular to AB towards origin
       if (direction == FxVec2.Zero)
@@ -52,9 +52,9 @@ namespace FxNet.Collision2D.Internal {
       ref var b = ref _points[1];
       ref var c = ref _points[0];
 
-      var ao = -a;
-      var ab = b - a;
-      var ac = c - a;
+      var ao = -a.Normalized();
+      var ab = (b - a).Normalized();
+      var ac = (c - a).Normalized();
 
       pointToRemoveIndex = 1;
       nextDirection = TripleProduct(ab, ac, ac);

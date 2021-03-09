@@ -10,7 +10,10 @@ namespace FxNet.Collision2D {
       var simplex = new Simplex2D(points);
 
       for (var i = 0; i < IterationsLimit; i++) {
-        var csoPoint = a.GetMaxInDirection(dir) - b.GetMaxInDirection(-dir);
+        dir = dir.Normalized();
+        var maxA = a.GetMaxInDirection(dir);
+        var maxB = b.GetMaxInDirection(-dir);
+        var csoPoint = maxA - maxB;
         simplex.PushPoint(csoPoint);
 
         if (FxVec2.Dot(csoPoint, dir).Raw <= 0)
