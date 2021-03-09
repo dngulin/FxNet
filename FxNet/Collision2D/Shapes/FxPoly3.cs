@@ -20,5 +20,7 @@ namespace FxNet.Collision2D {
         return PolygonSupport.GetMaxInDirection(points, 4, direction);
       }
     }
+
+    public override string ToString() => $"[{A}, {B}, {C}]";
   }
 }

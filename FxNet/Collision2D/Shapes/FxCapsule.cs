@@ -25,5 +25,7 @@ namespace FxNet.Collision2D {
 
       return dotA > dotB ? a : b;
     }
+
+    public override string ToString() => $"[{Start}, {End}, {Radius}]";
   }
 }

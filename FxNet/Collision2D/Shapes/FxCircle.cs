@@ -13,5 +13,7 @@ namespace FxNet.Collision2D {
     }
 
     public FxVec2 GetMaxInDirection(in FxVec2 direction) => Center + direction.Normalized() * Radius;
+
+    public override string ToString() => $"[{Center}, {Radius}]";
   }
 }
