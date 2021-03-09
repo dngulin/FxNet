@@ -29,5 +29,13 @@ namespace FxNet.Collision2D {
 
       return false;
     }
+
+    public static FxVec2 GetPenetration<T1, T2>(in T1 a, in T2 b, FxVec2 dir) where T1: IShape2D where T2 : IShape2D {
+      var normalizedDir = dir.Normalized();
+      var result = a.GetMaxInDirection(normalizedDir) - b.GetMaxInDirection(-normalizedDir);
+
+      var length = FxVec2.Dot(result, normalizedDir);
+      return normalizedDir * length;
+    }
   }
 }
