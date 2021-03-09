@@ -7,6 +7,20 @@ namespace FxNet.Random {
   }
 
   public static class FxRandom {
+    public static FxRandomState CreteState(ulong seed) {
+      var pcg32 = new Pcg32State();
+      pcg32.Init(seed, seed + 1);
+
+      var fxRandom = new FxRandomState();
+      fxRandom.Init(
+        ((ulong) pcg32.NextUInt() << 32) | pcg32.NextUInt(),
+        ((ulong) pcg32.NextUInt() << 32) | pcg32.NextUInt(),
+        ((ulong) pcg32.NextUInt() << 32) | pcg32.NextUInt(),
+        ((ulong) pcg32.NextUInt() << 32) | pcg32.NextUInt());
+
+      return fxRandom;
+    }
+
     public static void Init(this ref FxRandomState rng, ulong seed1, ulong seed2, ulong seq1, ulong seq2) {
       const ulong mask = ~0ul >> 1;
       if ((seq1 & mask) == (seq2 & mask))
