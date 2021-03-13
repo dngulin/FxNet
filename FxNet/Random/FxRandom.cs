@@ -1,6 +1,8 @@
+using System.Runtime.InteropServices;
 using FxNet.Math;
 
 namespace FxNet.Random {
+  [StructLayout(LayoutKind.Sequential)]
   public struct FxRandomState {
     public Pcg32State Hi;
     public Pcg32State Lo;

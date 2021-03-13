@@ -1,4 +1,7 @@
+using System.Runtime.InteropServices;
+
 namespace FxNet.Random {
+  [StructLayout(LayoutKind.Sequential)]
   public struct Pcg32State {
     public ulong State;
     public ulong Inc;
