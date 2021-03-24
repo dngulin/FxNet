@@ -63,6 +63,8 @@ namespace FxNet.Math {
     public static FxNum operator /(in FxNum l, int r) => new FxNum(l.Raw / r);
     public static FxNum operator /(in FxNum l, in long r) => new FxNum(l.Raw / r);
 
+    public static FxNum operator %(in FxNum l, in FxNum r) => new FxNum(l.Raw % r.Raw);
+
     public static FxNum operator -(in FxNum v) => new FxNum(-v.Raw);
 
     public static FxNum operator >>(in FxNum v, int n) => new FxNum(v.Raw >> n);
